@@ -8,4 +8,4 @@ class Transaction(Base):
     person = Column(String , nullable=False)
     amount = Column(Float , nullable=False)
     date = Column(Date , nullable=False)
-    transaction_type = Column(Boolean , nullable=False)
+    transaction_type = Column(String , nullable=False)
