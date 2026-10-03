@@ -98,6 +98,3 @@ This project allows users to upload their bank statement spreadsheets (such as S
 5. Explore the interactive API docs: Open http://127.0.0.1:8000/docs
  in your browser.
 
-## Project Documentation & Learning Guides
-
-* [**`ROADMAP.md`**](file:///c:/Dishu/Projects/Expense-Tracker/ROADMAP.md) — Step-by-step phased feature implementation guide and FastAPI concepts map.
