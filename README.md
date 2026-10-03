@@ -46,7 +46,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Backend Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.14)
 * **ASGI Server:** [Uvicorn](https://www.uvicorn.org/)
@@ -57,7 +57,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ---
 
-## 📡 API Endpoints Overview
+## API Endpoints Overview
 
 | Method | Endpoint | Description |
 | :---: | :--- | :--- |
