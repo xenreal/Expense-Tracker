@@ -1,12 +1,13 @@
-# 💰 Expense Tracker — Bank Statement Analyzer & API
+# Expense Tracker — Bank Statement Analyzer & API
 
 A fast, lightweight personal expense tracking API built with **FastAPI**, **SQLAlchemy**, and **SQLite**. 
 
 This project allows users to upload their bank statement spreadsheets (such as SBI Excel files, including password-protected sheets), automatically cleans and decodes messy bank transaction descriptions (like UPI transfers), stores them in a local SQLite database, and provides powerful search, filtering, and financial analytics.
 
+> **Project Status:** This repository currently contains the **Backend REST API (v1.0.0)** built with FastAPI and SQLite. The Frontend interface is currently in development.
 ---
 
-## 📌 What This Project Does
+## What This Project Does
 
 1. **Ingests Statements:** Takes your raw, messy bank Excel export (even if encrypted with a password).
 2. **Cleans & Parses:** Bypasses bank headers and logos, cleans rupee amounts (`₹`, commas), standardizes dates, and uses regex pattern-matching to extract real merchant and person names (e.g. extracts `"SWIGGY"` or a mobile number from `"WDL TFR UPI/DR/623619283719/SWIGGY/SBIN/order@upi"`).
@@ -16,7 +17,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 ### 1. Statement Upload & Decryption
 * **Password Protection Support:** Built-in in-memory decryption using `msoffcrypto` for password-locked statements.
@@ -46,7 +47,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Backend Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.14)
 * **ASGI Server:** [Uvicorn](https://www.uvicorn.org/)
@@ -57,7 +58,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ---
 
-## 📡 API Endpoints Overview
+## API Endpoints Overview
 
 | Method | Endpoint | Description |
 | :---: | :--- | :--- |
@@ -68,7 +69,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ---
 
-## 🏃 How to Run the Project
+## How to Run the Project
 
 1. **Activate the Virtual Environment & Navigate to Backend:**
    ```powershell
@@ -90,8 +91,6 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ---
 
-## 📚 Project Documentation & Learning Guides
+## Project Documentation & Learning Guides
 
 * [**`ROADMAP.md`**](file:///c:/Dishu/Projects/Expense-Tracker/ROADMAP.md) — Step-by-step phased feature implementation guide and FastAPI concepts map.
-* [**`DOUBTS.md`**](file:///c:/Dishu/Projects/Expense-Tracker/DOUBTS.md) — Personal learning notebook answering common doubts and questions with real-world analogies.
-* [**`explanations/`**](file:///c:/Dishu/Projects/Expense-Tracker/explanations/) — Detailed, line-by-line concept explanations for every single backend file.
