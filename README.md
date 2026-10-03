@@ -71,25 +71,32 @@ This project allows users to upload their bank statement spreadsheets (such as S
 
 ## How to Run the Project
 
-1. **Activate the Virtual Environment & Navigate to Backend:**
-   ```powershell
-   cd Backend
-   ```
+1. **Clone the repository:**
+```
+   git clone https://github.com/<your-username>/Expense-Tracker.git
+   cd Expense-Tracker/Backend
+```
 
-2. **Start the Development Server:**
-   ```powershell
-   venv\Scripts\uvicorn app.main:app --reload
-   ```
-   *Or using FastAPI CLI:*
-   ```powershell
-   venv\Scripts\fastapi dev app\main.py
-   ```
+2.Create and activate a virtual environment:
+```
+  python -m venv venv
+  # On Windows:
+  venv\Scripts\activate
+  # On Mac/Linux:
+  source venv/bin/activate
+```
 
-3. **Open the Interactive API Documentation:**
-   * **Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-   * **ReDoc:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+3. Install dependencies:
+```
+  pip install -r requirements.txt
+```
+4. Start the API server:
+```
+  uvicorn app.main:app --reload
+```
 
----
+5. Explore the interactive API docs: Open http://127.0.0.1:8000/docs
+ in your browser.
 
 ## Project Documentation & Learning Guides
 
