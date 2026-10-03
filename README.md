@@ -4,6 +4,7 @@ A fast, lightweight personal expense tracking API built with **FastAPI**, **SQLA
 
 This project allows users to upload their bank statement spreadsheets (such as SBI Excel files, including password-protected sheets), automatically cleans and decodes messy bank transaction descriptions (like UPI transfers), stores them in a local SQLite database, and provides powerful search, filtering, and financial analytics.
 
+> **Project Status:** This repository currently contains the **Backend REST API (v1.0.0)** built with FastAPI and SQLite. The Frontend interface is currently in development.
 ---
 
 ## What This Project Does
