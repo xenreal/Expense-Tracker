@@ -160,10 +160,8 @@ def parse_excel(contents: bytes) -> list[TransactionCreate]:
     transaction_type=txn_type
     )
      transactions.append(item)
-
-     transactions.append(item)
         
-     return transactions
+    return transactions
 
 def decrypt_excel(contents: bytes, password: str | None = None) -> bytes:
     input = io.BytesIO(contents)

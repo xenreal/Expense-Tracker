@@ -5,7 +5,7 @@ class Transaction(Base):
     __tablename__ = "transactions"
 
     id = Column(Integer , primary_key=True , index=True)
-    person = Column(String , nullable=False)
+    person = Column(String , nullable=False , default="self")
     amount = Column(Float , nullable=False)
     date = Column(Date , nullable=False)
-    transaction_type = Column(String , nullable=False)
+    transaction_type = Column(String , nullable=False , default="debit")
