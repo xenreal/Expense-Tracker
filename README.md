@@ -93,5 +93,3 @@ This project allows users to upload their bank statement spreadsheets (such as S
 ## Project Documentation & Learning Guides
 
 * [**`ROADMAP.md`**](file:///c:/Dishu/Projects/Expense-Tracker/ROADMAP.md) — Step-by-step phased feature implementation guide and FastAPI concepts map.
-* [**`DOUBTS.md`**](file:///c:/Dishu/Projects/Expense-Tracker/DOUBTS.md) — Personal learning notebook answering common doubts and questions with real-world analogies.
-* [**`explanations/`**](file:///c:/Dishu/Projects/Expense-Tracker/explanations/) — Detailed, line-by-line concept explanations for every single backend file.
