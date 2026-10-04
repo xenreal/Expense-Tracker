@@ -24,6 +24,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 * **Smart Header Detection:** Automatically scans and detects the true table header row, cleanly ignoring the first 10–20 rows of account metadata, IFSC codes, and bank logos.
 * **Multi-bank Column Normalization:** Uses keyword alias dictionaries (`Date`, `Debit`, `Credit`, `Narration`) to adapt to different bank column naming conventions.
 * **UPI & Entity Extraction:** Extracts real payee names and phone numbers from complex bank narration strings.
+* **High-Performance Deduplication:** Automatically prevents duplicate records if the same statement is uploaded multiple times or if multi-month statements overlap. Uses a date-window batch query combined with an in-memory hash set for O(1) deduplication lookups, avoiding N-query database overhead.
 
 ### 2. Transaction Browsing & History
 * **Newest-First Feed:** View your transactions sorted in descending order by date and ID.
@@ -65,7 +66,7 @@ This project allows users to upload their bank statement spreadsheets (such as S
 | `POST` | `/transactions/upload` | Upload an Excel statement (`.xlsx`, `.xls`) with an optional password. |
 | `GET` | `/transactions` | List and search transactions (supports `q`, `start_date`, `end_date`, `min_amount`, `max_amount`, `period`, `skip`, `limit`). |
 | `GET` | `/transactions/summary` | Get financial totals: `total_debited`, `total_credited`, and `net_balance`. |
-| `GET` | `/transactions/top-payees` | Get ranked list of who you spent the most money on in a given timeframe. |
+| `GET` | `/transactions/payee` | Get ranked list of who you spent the most money on in a given timeframe (supports `period`, `from_date`, `to_date`, `limit`). |
 
 ---
 

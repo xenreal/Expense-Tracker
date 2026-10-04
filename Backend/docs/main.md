@@ -41,9 +41,12 @@ The `main.py` module is the primary entry point and routing controller for the F
   2. Asynchronously reads file bytes.
   3. Decrypts file payload using `decrypt_excel()` if password-protected.
   4. Parses rows into `TransactionCreate` schema objects using `parse_excel()`.
-  5. Translates schema objects to SQLAlchemy `Transaction` ORM models.
-  6. Persists records via `db.commit()` and executes `db.refresh()` on each entity to populate autoincremented `id` values.
-  7. Returns list of saved transactions serialized via `TransactionResponse`.
+  5. Computes minimum and maximum dates (`min_date`, `max_date`) across the parsed transactions.
+  6. Executes a single batch query to retrieve existing database records within that date range.
+  7. Constructs an in-memory hash set of existing transaction fingerprints `(person, amount, date, transaction_type)` for O(1) lookup.
+  8. Iterates through parsed transactions, skipping any items already in the hash set (deduplication check), and staging new records via `db.add()`.
+  9. Persists records via `db.commit()` and executes `db.refresh()` on each saved entity to populate autoincremented `id` values.
+  10. Returns list of newly saved transactions serialized via `TransactionResponse`.
 - **Status Codes**:
   - `200 OK`: Successful upload and persistence.
   - `400 Bad Request`: Invalid file extension or no valid transactions detected.

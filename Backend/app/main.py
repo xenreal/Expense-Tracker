@@ -47,23 +47,45 @@ async def upload_statement(
     if not parsed_transactions:
         raise HTTPException(status_code=400, detail="No valid transactions found in the file.")
 
+    min_date = min(item.date for item in parsed_transactions)
+    max_date = max(item.date for item in parsed_transactions)
+
+    existing_rows = (
+        db.query(Transaction)
+        .filter(Transaction.date >= min_date , Transaction.date <= max_date)
+        .all()
+    )
+
+    existing_set = {
+        (row.person , row.amount , row.date, row.transaction_type) for row in existing_rows
+    }
+
     # 4. Save to Database
     saved_transactions = []
+
     for item in parsed_transactions:
+
+        fingerprint = (item.person, item.amount , item.date , item.transaction_type)
+        if fingerprint in existing_set:
+            continue
+
         db_item = Transaction(
             person=item.person,
             amount=item.amount,
             date=item.date,
             transaction_type=item.transaction_type
         )
+
         db.add(db_item)
         saved_transactions.append(db_item)
+        existing_set.add(fingerprint)
     
-    db.commit()
+    if saved_transactions:
+         db.commit()
+         for item in saved_transactions:
+                db.refresh(item)
+                
     
-    for item in saved_transactions:
-        db.refresh(item)
-        
     return saved_transactions
 
 @app.get("/transactions" , response_model=list[TransactionResponse])
