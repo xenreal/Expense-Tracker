@@ -9,10 +9,20 @@ from app.Utilities.calculateTime import get_period_dates
 from sqlalchemy import func
 from app.schemas.summary import SummaryResponse
 from app.schemas.payees import TopPayeeResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Expense Tracker API")
+
+app.add_middleware(
+     CORSMiddleware,
+     allow_origins = ["http://localhost:5173"],
+     allow_credentials = True,
+     allow_methods = ["*"],
+     allow_headers = ["*"],
+)
 
 @app.get("/")
 def read_root():
