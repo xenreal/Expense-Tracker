@@ -1,101 +1,166 @@
-# Expense Tracker — Bank Statement Analyzer & API
+# Expense Tracker — Bank Statement Analyzer and Financial Dashboard
 
-A fast, lightweight personal expense tracking API built with **FastAPI**, **SQLAlchemy**, and **SQLite**. 
+A personal expense tracking and bank statement analysis web application built with FastAPI, SQLite, and React.
 
-This project allows users to upload their bank statement spreadsheets (such as SBI Excel files, including password-protected sheets), automatically cleans and decodes messy bank transaction descriptions (like UPI transfers), stores them in a local SQLite database, and provides powerful search, filtering, and financial analytics.
+> **Project Status:** Complete (v2.0.0). Full-stack web application featuring a Python FastAPI backend and a Vite + React frontend.
 
-> **Project Status:** This repository currently contains the **Backend REST API (v1.0.0)** built with FastAPI and SQLite. The Frontend interface is currently in development.
 ---
 
 ## What This Project Does
 
-1. **Ingests Statements:** Takes your raw, messy bank Excel export (even if encrypted with a password).
-2. **Cleans & Parses:** Bypasses bank headers and logos, cleans rupee amounts (`₹`, commas), standardizes dates, and uses regex pattern-matching to extract real merchant and person names (e.g. extracts `"SWIGGY"` or a mobile number from `"WDL TFR UPI/DR/623619283719/SWIGGY/SBIN/order@upi"`).
-3. **Persists to SQL:** Saves cleaned records into an SQLite database (`expenses.db`) via SQLAlchemy ORM.
-4. **Browsing & Discovery:** Lets you view past transactions, search by who you paid, and filter by dates and amounts.
-5. **Analytics & Insights:** Calculates total spending, total income, net cash flow, and ranks your top payees over specific calendar periods (this week, this month, this year).
+Managing raw bank statements manually is difficult because descriptions are messy, dates and numbers are formatted differently across banks, and statements often contain extra rows like logos and branch addresses.
+
+This project solves that problem:
+
+1. **Reads Bank Statements:** Accepts your bank statement in Excel format (.xlsx or .xls), including password-protected files.
+2. **Cleans and Extracts Data:** Ignores header rows, cleans currency amounts, standardizes dates, and extracts clean merchant or person names from complex bank narration strings (such as UPI transfers).
+3. **Stores Data Locally:** Saves clean transaction records into a local SQLite database (`expenses.db`) while automatically preventing duplicate entries.
+4. **Interactive Dashboard:** Provides a dark-mode web interface to search transactions, filter by date or calendar period, view total income and expenses, and rank top payees.
 
 ---
 
-## Key Features
+## Features
 
-### 1. Statement Upload & Decryption
-* **Password Protection Support:** Built-in in-memory decryption using `msoffcrypto` for password-locked statements.
-* **Smart Header Detection:** Automatically scans and detects the true table header row, cleanly ignoring the first 10–20 rows of account metadata, IFSC codes, and bank logos.
-* **Multi-bank Column Normalization:** Uses keyword alias dictionaries (`Date`, `Debit`, `Credit`, `Narration`) to adapt to different bank column naming conventions.
-* **UPI & Entity Extraction:** Extracts real payee names and phone numbers from complex bank narration strings.
-* **High-Performance Deduplication:** Automatically prevents duplicate records if the same statement is uploaded multiple times or if multi-month statements overlap. Uses a date-window batch query combined with an in-memory hash set for O(1) deduplication lookups, avoiding N-query database overhead.
+### 1. Statement Upload and Parsing
+* **Password Support:** Built-in decryption for password-locked statements.
+* **Smart Detection:** Automatically locates table headers, skipping bank logos, branch names, and account metadata rows.
+* **Duplicate Prevention:** Skips records that have already been uploaded, preventing duplicate rows when uploading overlapping statements.
+* **Name Extraction:** Uses pattern matching to extract real payee names and phone numbers from raw narration text.
 
-### 2. Transaction Browsing & History
-* **Newest-First Feed:** View your transactions sorted in descending order by date and ID.
-* **Pagination:** Control list sizes using `skip` and `limit` to keep data transfer lightweight.
+### 2. Transaction Feed and Search
+* **Newest-First Feed:** View your records sorted in descending order by date.
+* **Name Search:** Search transactions by payee or merchant name in real time.
+* **Period Filters:** Filter records by calendar shortcuts: This Week, This Month, This Year, or the past 6 Months.
+* **Status Indicators:** Clear badges and arrows indicating whether money came in (Credit) or went out (Debit).
 
-### 3. Search & Flexible Filtering
-* **Name & Payee Search (`q`):** Case-insensitive search across merchant or person names (e.g., `?q=swiggy` matches "Swiggy", "SWIGGY", and "swiggy").
-* **Date Range Filters (`start_date`, `end_date`):** Filter expenses between custom date windows.
-* **Amount Range Filters (`min_amount`, `max_amount`):** Filter by minimum and maximum transaction amounts (e.g., find all transactions over ₹5,000, or small expenses under ₹200).
-* **Calendar Period Shortcuts (`period`):** Instantly filter by real calendar boundaries:
-  * `"week"`: Monday of the current week $\rightarrow$ Sunday.
-  * `"month"`: 1st of the current month $\rightarrow$ Today.
-  * `"year"`: January 1st $\rightarrow$ Today.
-  * `"6months"`: Past 180 days.
+### 3. Financial Summary
+* **Total Expenses:** Sum of all debit transactions in the selected period.
+* **Total Income:** Sum of all credit transactions in the selected period.
+* **Net Cash Flow:** Difference between income and expenses, showing whether you saved or overspent.
 
-### 4. Financial Summaries & Analytics
-* **Total Expenses:** Sum of all debit transactions in the selected timeframe.
-* **Total Income:** Sum of all credit transactions in the selected timeframe.
-* **Net Cash Flow ($+/-$):** Net balance (Credit minus Debit) showing whether you saved or overspent.
-* **Top Payees Leaderboard:** Ranked list showing who you paid the most money to within any time period (e.g., top 5 merchants you spent the most on this month).
+### 4. Top Payees Leaderboard
+* **Ranked List:** View who you paid the most money to within any selected time window.
+* **Visual Progress Bars:** Background fill showing each payee's proportion relative to your highest expense.
+* **Medal Badges:** Gold, silver, and bronze rank indicators for your top three spending recipients.
 
 ---
 
 ## Tech Stack
 
-* **Backend Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.14)
-* **ASGI Server:** [Uvicorn](https://www.uvicorn.org/)
-* **ORM & Database:** [SQLAlchemy](https://www.sqlalchemy.org/) with [SQLite](https://www.sqlite.org/) (`expenses.db`)
-* **Data Validation & Schemas:** [Pydantic v2](https://docs.pydantic.dev/)
-* **File & Data Processing:** [Pandas](https://pandas.pydata.org/), [openpyxl](https://openpyxl.readthedocs.io/)
-* **Decryption:** [msoffcrypto-tool](https://github.com/nolze/msoffcrypto-tool)
+### Backend
+* **Language:** Python
+* **Web Framework:** FastAPI
+* **Database and ORM:** SQLite with SQLAlchemy
+* **Data Validation:** Pydantic v2
+* **File Processing:** Pandas and OpenPyXL
+* **Decryption:** msoffcrypto-tool
+* **Server:** Uvicorn
 
----
-
-## API Endpoints Overview
-
-| Method | Endpoint | Description |
-| :---: | :--- | :--- |
-| `POST` | `/transactions/upload` | Upload an Excel statement (`.xlsx`, `.xls`) with an optional password. |
-| `GET` | `/transactions` | List and search transactions (supports `q`, `start_date`, `end_date`, `min_amount`, `max_amount`, `period`, `skip`, `limit`). |
-| `GET` | `/transactions/summary` | Get financial totals: `total_debited`, `total_credited`, and `net_balance`. |
-| `GET` | `/transactions/payee` | Get ranked list of who you spent the most money on in a given timeframe (supports `period`, `from_date`, `to_date`, `limit`). |
+### Frontend
+* **UI Library:** React 19
+* **Build Tool:** Vite
+* **Routing:** React Router DOM
+* **Styling:** Tailwind CSS v4
+* **Icons:** Lucide React
+* **Font:** Outfit (Google Fonts)
 
 ---
 
 ## How to Run the Project
 
-1. **Clone the repository:**
-```
-   git clone https://github.com/<your-username>/Expense-Tracker.git
-   cd Expense-Tracker/Backend
+### Option A: One-Click Start (Windows)
+
+If you are on Windows and have already set up your Python virtual environment and installed npm packages, double-click the `start.bat` file in the root folder, or run:
+
+```bat
+start.bat
 ```
 
-2.Create and activate a virtual environment:
-```
-  python -m venv venv
-  # On Windows:
-  venv\Scripts\activate
-  # On Mac/Linux:
-  source venv/bin/activate
+This launches both the backend and frontend in separate console windows.
+
+---
+
+### Option B: Manual Setup (Two Terminals)
+
+#### Prerequisites
+* Python 3.10 or higher
+* Node.js 18 or higher
+
+#### 1. Start the Backend
+
+Open a terminal and navigate to the `Backend` directory:
+
+```bash
+cd Backend
 ```
 
-3. Install dependencies:
-```
-  pip install -r requirements.txt
-```
-4. Start the API server:
-```
-  uvicorn app.main:app --reload
+Create and activate a virtual environment:
+
+On Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
 ```
 
-5. Explore the interactive API docs: Open http://127.0.0.1:8000/docs
- in your browser.
+On macOS and Linux:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install backend dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+Start the FastAPI server:
+```bash
+uvicorn app.main:app --reload
+```
+
+The backend API will run on `http://127.0.0.1:8000`. You can test the interactive API documentation at `http://127.0.0.1:8000/docs`.
+
+---
+
+#### 2. Start the Frontend
+
+Open a second terminal and navigate to the `Frontend` directory:
+
+```bash
+cd Frontend
+```
+
+Install frontend dependencies:
+```bash
+npm install
+```
+
+Start the Vite development server:
+```bash
+npm run dev
+```
+
+The web interface will run on `http://localhost:5173`. Open that URL in your browser to use the application.
+
+---
+
+## API Endpoints Reference
+
+| Method | Endpoint | Description |
+| :---: | :--- | :--- |
+| `GET` | `/` | Health check endpoint returning server status. |
+| `POST` | `/transactions/upload` | Upload an Excel statement (`.xlsx`, `.xls`) with an optional password. |
+| `GET` | `/transactions` | List and search transactions with support for search query, date ranges, and period filters. |
+| `GET` | `/transactions/summary` | Get financial totals: `total_debited`, `total_credited`, and `net_balance`. |
+| `GET` | `/transactions/payee` | Get ranked list of payees by total debit amount in a given time period. |
+
+## API Endpoints Reference
+
+| Method | Endpoint | Description |
+| :---: | :--- | :--- |
+| `GET` | `/` | Health check endpoint returning server status. |
+| `POST` | `/transactions/upload` | Upload an Excel statement (`.xlsx`, `.xls`) with an optional password. |
+| `GET` | `/transactions` | List and search transactions with support for search query, date ranges, and period filters. |
+| `GET` | `/transactions/summary` | Get financial totals: `total_debited`, `total_credited`, and `net_balance`. |
+| `GET` | `/transactions/payee` | Get ranked list of payees by total debit amount in a given time period. |
 
