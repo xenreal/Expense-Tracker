@@ -1,8 +1,8 @@
 # Expense Tracker — Bank Statement Analyzer and Financial Dashboard
 
-A personal expense tracking and bank statement analysis web application built with FastAPI, SQLite, and React.
+A personal expense tracking and bank statement analysis web application built with FastAPI and SQLite.
 
-> **Project Status:** Complete (v2.0.0). Full-stack web application featuring a Python FastAPI backend and a Vite + React frontend.
+> **Project Status:** Complete (v2.0.0). Full-stack web application featuring a Python FastAPI backend + simple UI
 
 ---
 
@@ -55,14 +55,6 @@ This project solves that problem:
 * **File Processing:** Pandas and OpenPyXL
 * **Decryption:** msoffcrypto-tool
 * **Server:** Uvicorn
-
-### Frontend
-* **UI Library:** React 19
-* **Build Tool:** Vite
-* **Routing:** React Router DOM
-* **Styling:** Tailwind CSS v4
-* **Icons:** Lucide React
-* **Font:** Outfit (Google Fonts)
 
 ---
 
@@ -143,16 +135,6 @@ npm run dev
 The web interface will run on `http://localhost:5173`. Open that URL in your browser to use the application.
 
 ---
-
-## API Endpoints Reference
-
-| Method | Endpoint | Description |
-| :---: | :--- | :--- |
-| `GET` | `/` | Health check endpoint returning server status. |
-| `POST` | `/transactions/upload` | Upload an Excel statement (`.xlsx`, `.xls`) with an optional password. |
-| `GET` | `/transactions` | List and search transactions with support for search query, date ranges, and period filters. |
-| `GET` | `/transactions/summary` | Get financial totals: `total_debited`, `total_credited`, and `net_balance`. |
-| `GET` | `/transactions/payee` | Get ranked list of payees by total debit amount in a given time period. |
 
 ## API Endpoints Reference
 
